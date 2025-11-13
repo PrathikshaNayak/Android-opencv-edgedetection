@@ -2,24 +2,21 @@ package com.example.assessment;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ImageView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
+import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
 
 public class MainActivity extends AppCompatActivity {
 
     static {
-        System.loadLibrary("native-lib"); // Load C++ library
-        System.loadLibrary("opencv_java4"); // Load OpenCV
+        System.loadLibrary("native-lib");
     }
 
     private ImageView imageView;
+    private Button edgeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,24 +24,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         imageView = findViewById(R.id.imageView);
-        Button btnEdge = findViewById(R.id.btnEdge);
+        edgeButton = findViewById(R.id.edgeButton);
 
-        // Load image from drawable
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.sample);
-        imageView.setImageBitmap(bitmap);
+        if (!OpenCVLoader.initDebug()) {
+            // Handle OpenCV initialization error
+        }
 
-        btnEdge.setOnClickListener(v -> {
-            Bitmap edgeBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-            Mat mat = new Mat();
-            Utils.bitmapToMat(edgeBitmap, mat);
+        edgeButton.setOnClickListener(v -> {
+            // Load bitmap from drawable
+            Bitmap bitmap = Bitmap.createBitmap(512, 512, Bitmap.Config.ARGB_8888); // placeholder bitmap
 
-            detectEdges(mat); // Call native C++ function
+            Mat inputMat = new Mat();
+            Mat outputMat = new Mat();
+            Utils.bitmapToMat(bitmap, inputMat);
 
-            Utils.matToBitmap(mat, edgeBitmap);
-            imageView.setImageBitmap(edgeBitmap);
+            edgeDetection(inputMat.getNativeObjAddr(), outputMat.getNativeObjAddr());
+
+            Utils.matToBitmap(outputMat, bitmap);
+            imageView.setImageBitmap(bitmap);
         });
     }
 
-    // Native function
-    public native void detectEdges(long matAddr);
+    public native String stringFromJNI();
+    public native void edgeDetection(long matAddrInput, long matAddrOutput);
 }
