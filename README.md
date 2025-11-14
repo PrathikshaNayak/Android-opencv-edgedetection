@@ -67,3 +67,15 @@ Updates stats (FPS, JNI calls, processing time) every second
 
 Can be extended to fetch real-time frames from Android via WebSocket
  Results:
+
+Input Image:  
+## Screenshots / Demo
+
+Android App Input & Edge Detection Output:
+
+Input & Output Images:  
+![Input 1](output-images/op1_1.png)  
+![Input 2](output-images/op1_2.png)  
+![Input 3](output-images/op1_3.png)  
+![Input 4](output-images/op1_4.png)
+
