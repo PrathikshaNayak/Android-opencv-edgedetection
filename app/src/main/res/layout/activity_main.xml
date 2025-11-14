@@ -1,20 +1,30 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center_horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="350dp"
+        android:background="#EEEEEE"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_foreground"/>
+        android:contentDescription="Selected image" />
 
     <Button
-        android:id="@+id/edgeButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnPick"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Detect Edges"/>
+        android:layout_marginTop="20dp"
+        android:text="Pick Image from Gallery" />
+
+    <Button
+        android:id="@+id/btnDetect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Detect Edges" />
 </LinearLayout>
