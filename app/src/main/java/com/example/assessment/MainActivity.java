@@ -1,9 +1,13 @@
 package com.example.assessment;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import org.opencv.android.OpenCVLoader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,5 +23,12 @@ public class MainActivity extends AppCompatActivity {
         outputImageView = findViewById(R.id.outputImage);
         pickImageBtn = findViewById(R.id.pickImage);
         detectEdgesBtn = findViewById(R.id.detectEdges);
+
+        // OpenCV Initialization
+        if (!OpenCVLoader.initDebug()) {
+            Log.e("OpenCV", "OpenCV initialization FAILED");
+        } else {
+            Log.d("OpenCV", "OpenCV initialized SUCCESSFULLY");
+        }
     }
 }
