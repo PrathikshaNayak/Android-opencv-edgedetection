@@ -1,8 +1,3 @@
-import org.opencv.android.OpenCVLoader;
-import org.opencv.android.Utils;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
 package com.example.assessment;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -17,15 +12,21 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import org.opencv.android.OpenCVLoader;
-
+import java.io.IOException;
 import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
 
+    static {
+        System.loadLibrary("native-lib");  // Load C++ library
+    }
+
+    // Native function from C++
+    public native Bitmap detectEdges(Bitmap inputBitmap);
+
     ImageView inputImageView, outputImageView;
     Button pickImageBtn, detectEdgesBtn;
-    Bitmap selectedBitmap;
+    Bitmap selectedBitmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,37 +38,39 @@ public class MainActivity extends AppCompatActivity {
         pickImageBtn = findViewById(R.id.pickImage);
         detectEdgesBtn = findViewById(R.id.detectEdges);
 
-        // OpenCV Initialization
-        if (!OpenCVLoader.initDebug()) {
-            Log.e("OpenCV", "OpenCV initialization FAILED");
-        } else {
-            Log.d("OpenCV", "OpenCV initialized SUCCESSFULLY");
-        }
-
-        // Pick image button
         pickImageBtn.setOnClickListener(v -> openImagePicker());
+
+        detectEdgesBtn.setOnClickListener(v -> {
+            if (selectedBitmap == null) {
+                Log.e("EdgeApp", "No image selected");
+                return;
+            }
+
+            Bitmap processed = detectEdges(selectedBitmap);
+            outputImageView.setImageBitmap(processed);
+        });
     }
 
-    // Image Picker launcher
+    // Image picker launcher
     ActivityResultLauncher<String> imagePickerLauncher =
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
-                if (uri != null) {
-                    loadImage(uri);
-                }
+                if (uri != null) loadSelectedImage(uri);
             });
 
-    // Opens the gallery
     private void openImagePicker() {
         imagePickerLauncher.launch("image/*");
     }
 
-    // Loads selected image into ImageView
-    private void loadImage(Uri uri) {
+    // Load image into ImageView
+    private void loadSelectedImage(Uri uri) {
         try {
-            InputStream inputStream = getContentResolver().openInputStream(uri);
-            selectedBitmap = BitmapFactory.decodeStream(inputStream);
+            InputStream in = getContentResolver().openInputStream(uri);
+            selectedBitmap = BitmapFactory.decodeStream(in);
             inputImageView.setImageBitmap(selectedBitmap);
-        } catch (Exception e) {
+
+            if (in != null) in.close();
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
