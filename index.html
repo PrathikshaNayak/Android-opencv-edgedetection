@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenCV Edge Detection Viewer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🧪 Android OpenCV Edge Detection Viewer</h1>
+        <p class="subtitle">Real-Time Camera Processing with OpenCV C++ & OpenGL ES</p>
+    </header>
+
+    <div class="dashboard">
+        <!-- Camera, OpenCV, OpenGL, Web Cards (same as HTML version) -->
+    </div>
+
+    <div class="viewer-section">
+        <div class="viewer-header">
+            <h2>📺 Live Frame Viewer</h2>
+            <div class="toggle-buttons">
+                <button class="btn btn-secondary active" onclick="toggleView('raw')">Raw Feed</button>
+                <button class="btn btn-secondary" onclick="toggleView('edge')">Edge Detection</button>
+                <button class="btn btn-primary" onclick="toggleView('split')">Split View</button>
+            </div>
+        </div>
+        <div class="viewer-grid" id="viewerGrid">
+            <div class="frame-container">
+                <div class="frame-label">Raw Camera Feed</div>
+                <canvas class="frame-canvas" id="rawCanvas"></canvas>
+                <div class="fps-counter" id="rawFps">30 FPS</div>
+            </div>
+            <div class="frame-container">
+                <div class="frame-label">Edge Detection Output</div>
+                <canvas class="frame-canvas" id="edgeCanvas"></canvas>
+                <div class="fps-counter" id="edgeFps">28 FPS</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="architecture-section">
+        <h2 class="architecture-title">🏗️ System Architecture</h2>
+        <div class="flow-diagram">
+            <!-- flow diagram steps same as HTML -->
+        </div>
+        <div class="log-section" id="logSection">
+            <!-- log entries inserted by TypeScript -->
+        </div>
+    </div>
+</div>
+
+<script type="module" src="main.ts"></script>
+</body>
+</html>
